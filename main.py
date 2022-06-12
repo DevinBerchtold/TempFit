@@ -23,6 +23,7 @@ done_temp = brisket_done
 day = dt.date.today()
 daystring = day.strftime('%Y%m%d') # for filename
 print(f'Today: {daystring}')
+daystring = '20211113' # override
 
 files = glob.glob(f'cooks/history_probe_?_{daystring}*.csv')
 print(f'Found these files:\n{files}')
@@ -39,8 +40,6 @@ therm = therms[-1]
 
 intervals = [np.timedelta64(i, 'm') for i in [60,120]]
 times = [np.timedelta64(i, 'm') for i in range(90,-5,-5)]
-print(f'Intervals: {intervals}')
-print(f'Times: {times}')
 
 for i in intervals:
     print(f'interval: {i}')
