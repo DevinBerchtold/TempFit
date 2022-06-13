@@ -47,7 +47,7 @@ class Thermometer:
             self.end = self.dataframe.index[-1]
 
     def plot(self):
-        self.dataframe.plot(y='Temperature')
+        self.dataframe.plot(y='Temperature', ylabel='Degrees Fahrenheit', title='Temperature vs. Time')
 
     def func(self, done_temp, x, y, f, init):
         popt, _ = curve_fit(f, x, y, init)
@@ -111,13 +111,14 @@ class Thermometer:
 
         if plot:
             # Plot actual data
-            pyplot.scatter([i/60.0 for i in x], y, label='Measured temperature')
+            pyplot.scatter([i/60.0 for i in x], y, label='Measured')
             # Plot the fitted function line
             x_line = np.arange(min(x), max(max(x), fit_eta)+60, 1)
             y_line = function(x_line)
             x_line = [i/60.0 for i in x_line]
             pyplot.xlabel('Hours')
             pyplot.ylabel('Degrees Fahrenheit')
+            pyplot.title('Measured Temperature vs. Expected')
             coeffs = [f'{o:.2g}' for o in popt]
             pyplot.plot(x_line, y_line, '--', color='red', label=f"{fit_func}(x, {', '.join(coeffs)})")
             # Plot ETA estimation
