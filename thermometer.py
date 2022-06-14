@@ -22,15 +22,29 @@ def format_minutes(minutes):
         return f'-{h}:{m:02}'
 
 class Thermometer:
-    style = {
+    dark_style = {
         'axes.facecolor': '00000080',
         'axes.prop_cycle': "cycler('color', ['tab:blue', 'tab:orange', 'tab:green', 'tab:red'])",
         'figure.facecolor': '1e1e1e', # vscode gray
         'figure.edgecolor': '1e1e1e', # vscode gray
-        'savefig.facecolor': '0D1117', # github gray
-        'savefig.edgecolor': '0D1117'  # github gray
+        # 'savefig.facecolor': '0D1117', # github gray
+        # 'savefig.edgecolor': '0D1117'  # github gray
+        'savefig.facecolor': '00000000',
+        'savefig.edgecolor': '00000000',
+        'lines.color': 'ffffff80',
+        'figure.figsize': '5.4, 3.6',  # figure size in inches
+        'figure.dpi': '100'       # figure dots per inch
     }
-    pyplot.style.use(['dark_background', style])
+    pyplot.style.use(['dark_background', dark_style])
+
+    # light_style = {
+    #     'savefig.facecolor': 'ffffff00', # transparent
+    #     'savefig.edgecolor': 'ffffff00', # transparent
+    #     'lines.color': '00000080',
+    #     'figure.figsize': '5.4, 3.6',  # figure size in inches
+    #     'figure.dpi': '100'       # figure dots per inch
+    # }
+    # pyplot.style.use(['default', light_style])
 
     def __init__(self, filename=None):
         self.filename = filename
@@ -135,8 +149,8 @@ class Thermometer:
             co_string = co_string.replace('e+0','e+')
             pyplot.plot(x_line, y_line, '--', color='C1', label=f"{fit_func}(x, {co_string})")
             # Plot ETA estimation
-            pyplot.axvline(x=fit_eta/60.0, color='#ffffff80', label=f'{done_temp}° at {format_minutes(fit_eta)}')
-            pyplot.axhline(y=done_temp, color='#ffffff80')
+            pyplot.axvline(x=fit_eta/60.0, label=f'{done_temp}° at {format_minutes(fit_eta)}')
+            pyplot.axhline(y=done_temp)
             pyplot.legend() # Labels
             # pyplot.savefig('plot.svg')
             pyplot.show() # Show the chart
