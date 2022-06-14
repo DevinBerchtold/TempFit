@@ -75,17 +75,19 @@ def tx(x, a, b, c, d, e):
 
 ## Example Cooks
 
-### Pork
+### Pork :pig:
 
 Boneless pork shoulder with probe inserted into the center, estimated almost 2 hours before done time.
 
 ![Graph of temperature data and prediction](plots/pork.svg "Pork temperature prediction")
 
-### Turkey
+### Turkey :chicken:
 
-Spatchcocked turkey with probe inserted into the breast, estimated about 1 hour before done time. *Note: The FDA recommends poultry be cooked to at least 165° internal temperature, but it will probably be dry*
+Spatchcocked turkey with probe inserted into the breast, estimated about 1 hour before done time.
 
 ![Graph of temperature data and prediction](plots/turkey.svg "Turkey temperature prediction")
+
+> *Note:* The FDA recommends poultry be cooked to at least 165° internal temperature, but it will probably be dry. See [this article](https://www.seriouseats.com/butterflied-roasted-chicken-with-quick-jus-recipe) by J. Kenji López-Alt for more information.
 
 ---
 
