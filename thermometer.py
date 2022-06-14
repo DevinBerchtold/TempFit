@@ -22,6 +22,16 @@ def format_minutes(minutes):
         return f'-{h}:{m:02}'
 
 class Thermometer:
+    style = {
+        'axes.facecolor': '00000080',
+        'axes.prop_cycle': "cycler('color', ['tab:blue', 'tab:orange', 'tab:green', 'tab:red'])",
+        'figure.facecolor': '1e1e1e',
+        'figure.edgecolor': '1e1e1e',
+        'savefig.facecolor': '00000000',
+        'savefig.edgecolor': '00000000'
+    }
+    pyplot.style.use(['dark_background', style])
+
     def __init__(self, filename=None):
         self.filename = filename
 
@@ -111,20 +121,24 @@ class Thermometer:
 
         if plot:
             # Plot actual data
-            pyplot.scatter([i/60.0 for i in x], y, label='Measured')
+            pyplot.scatter([i/60.0 for i in x], y, marker='.', label='Measured')
             # Plot the fitted function line
             x_line = np.arange(min(x), max(max(x), fit_eta)+60, 1)
             y_line = function(x_line)
             x_line = [i/60.0 for i in x_line]
             pyplot.xlabel('Hours')
             pyplot.ylabel('Degrees Fahrenheit')
-            pyplot.title('Measured Temperature vs. Expected')
+            pyplot.title('Measured and Expected Temperature vs. Time')
             coeffs = [f'{o:.2g}' for o in popt]
-            pyplot.plot(x_line, y_line, '--', color='red', label=f"{fit_func}(x, {', '.join(coeffs)})")
+            co_string = ', '.join(coeffs)
+            co_string = co_string.replace('e-0','e-')
+            co_string = co_string.replace('e+0','e+')
+            pyplot.plot(x_line, y_line, '--', color='C1', label=f"{fit_func}(x, {co_string})")
             # Plot ETA estimation
-            pyplot.axvline(x=fit_eta/60.0, label=f'{done_temp}° at {format_minutes(fit_eta)}')
-            pyplot.axhline(y=done_temp)
+            pyplot.axvline(x=fit_eta/60.0, color='0.5', label=f'{done_temp}° at {format_minutes(fit_eta)}')
+            pyplot.axhline(y=done_temp, color='#ffffff80')
             pyplot.legend() # Labels
+            # pyplot.savefig('plot.svg')
             pyplot.show() # Show the chart
 
         return fit_eta

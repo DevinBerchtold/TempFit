@@ -6,7 +6,8 @@ Thermometer uses time and temperature data to estimate when your meat will reach
 * Import spreadsheet or manually enter temperature data.
 * Understand more about the accuracy and reliability of the estimation.
 
-![Graph of temperature data and prediction](plot.png "Temperature prediction")
+![Graph of temperature data and prediction](pork.svg "Temperature prediction")
+
 *Illustrates the `estimate()` function with measured data in cyan and the estimated future data in red*
 
 ---
@@ -69,6 +70,22 @@ Depending on what you're cooking and how fast the temperature changes, you will 
 def tx(x, a, b, c, d, e):
     return (a*(x**3))+(b*(x**2))+(c*x)+(d*((1+x)**-1))+e
 ```
+
+---
+
+## Examples
+
+### Pork
+
+Pulled pork shoulder estimated almost 2 hours before done time.
+
+![Graph of temperature data and prediction](pork.svg "Pork temperature prediction")
+
+### Turkey
+
+Turkey breast estimated about 1 hour before done time.
+
+![Graph of temperature data and prediction](turkey.svg "Turkey temperature prediction")
 
 ---
 
