@@ -1,6 +1,6 @@
-# Thermometer
+# TempFit
 
-Thermometer does extrapolation on time and temperature data to estimate when your meat will reach your desired cooking temperature.
+TempFit does extrapolation on time and temperature data to estimate when your meat will reach your desired cooking temperature.
 
 * Automatically estimate cooking time without fancy thermometers or apps.
 * Import spreadsheet or manually enter temperature data.
@@ -14,7 +14,7 @@ Thermometer does extrapolation on time and temperature data to estimate when you
 
 ## Installation
 
-1. Download the project from [GitHub](https://github.com/DevinBerchtold/Thermometer)
+1. Download the project from [GitHub](https://github.com/DevinBerchtold/TempFit)
 2. Install the required Python libraries:
     * [SciPy](https://scipy.org/)
     * [pandas](https://pandas.pydata.org/)
