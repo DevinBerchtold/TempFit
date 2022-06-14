@@ -25,10 +25,10 @@ class Thermometer:
     style = {
         'axes.facecolor': '00000080',
         'axes.prop_cycle': "cycler('color', ['tab:blue', 'tab:orange', 'tab:green', 'tab:red'])",
-        'figure.facecolor': '1e1e1e',
-        'figure.edgecolor': '1e1e1e',
-        'savefig.facecolor': '00000000',
-        'savefig.edgecolor': '00000000'
+        'figure.facecolor': '1e1e1e', # vscode gray
+        'figure.edgecolor': '1e1e1e', # vscode gray
+        'savefig.facecolor': '0D1117', # github gray
+        'savefig.edgecolor': '0D1117'  # github gray
     }
     pyplot.style.use(['dark_background', style])
 
@@ -135,7 +135,7 @@ class Thermometer:
             co_string = co_string.replace('e+0','e+')
             pyplot.plot(x_line, y_line, '--', color='C1', label=f"{fit_func}(x, {co_string})")
             # Plot ETA estimation
-            pyplot.axvline(x=fit_eta/60.0, color='0.5', label=f'{done_temp}° at {format_minutes(fit_eta)}')
+            pyplot.axvline(x=fit_eta/60.0, color='#ffffff80', label=f'{done_temp}° at {format_minutes(fit_eta)}')
             pyplot.axhline(y=done_temp, color='#ffffff80')
             pyplot.legend() # Labels
             # pyplot.savefig('plot.svg')

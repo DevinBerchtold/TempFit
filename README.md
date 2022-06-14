@@ -1,14 +1,14 @@
 # Thermometer
 
-Thermometer uses time and temperature data to estimate when your meat will reach the desired cooking temperature.
+Thermometer does extrapolation on time and temperature data to estimate when your meat will reach your desired cooking temperature.
 
 * Automatically estimate cooking time without fancy thermometers or apps.
 * Import spreadsheet or manually enter temperature data.
 * Understand more about the accuracy and reliability of the estimation.
 
-![Graph of temperature data and prediction](pork.svg "Temperature prediction")
+![Graph of temperature data and prediction](plots/pork.svg "Temperature prediction")
 
-*Illustrates the `estimate()` function with measured data in cyan and the estimated future data in red*
+*Illustrates the `estimate()` function with measured data in blue and the estimated future data in orange*
 
 ---
 
@@ -32,12 +32,12 @@ Thermometer uses time and temperature data to estimate when your meat will reach
 ## Usage
 
 1. Start cooking and save your temperature data (or try an included .csv)
-2. Import `thermometer.py` and create a `Thermometer` object from your .csv
-3. Run `Thermometer.estimate()` to predict future temperatures
+2. Import [`thermometer.py`](#thermometerpy) and create a `Thermometer` object from your .csv
+3. Run `Thermometer.estimate()` to predict future temperatures. (See [`test.ipynb`](#testipynb) for examples)
 
 ---
 
-## Main Files
+## Files
 
 ### thermometer.py
 
@@ -64,7 +64,7 @@ Depending on what you're cooking and how fast the temperature changes, you will 
 
 ## Curve Fit Performance
 
-`Thermometer` uses `scipy` functions `curve_fit` and `fsolve` to fit an arbitrary function to the measured data and then solve that function for future values. A 3rd order polynomial usually fits well, but it's improved by adding a `+cx^-1` to the template function:
+`Thermometer` uses `scipy` functions `curve_fit` and `fsolve` to fit an arbitrary function to the measured data and then extrapolate that function and predict future values. A 3rd order polynomial usually fits well, but it's improved by adding a `+cx^-1` term to the objective function:
 
 ```python
 def tx(x, a, b, c, d, e):
@@ -73,19 +73,19 @@ def tx(x, a, b, c, d, e):
 
 ---
 
-## Examples
+## Example Cooks
 
 ### Pork
 
-Pulled pork shoulder estimated almost 2 hours before done time.
+Boneless pork shoulder with probe inserted into the center, estimated almost 2 hours before done time.
 
-![Graph of temperature data and prediction](pork.svg "Pork temperature prediction")
+![Graph of temperature data and prediction](plots/pork.svg "Pork temperature prediction")
 
 ### Turkey
 
-Turkey breast estimated about 1 hour before done time.
+Spatchcocked turkey with probe inserted into the breast, estimated about 1 hour before done time. *Note: The FDA recommends poultry be cooked to at least 165° internal temperature, but it will probably be dry*
 
-![Graph of temperature data and prediction](turkey.svg "Turkey temperature prediction")
+![Graph of temperature data and prediction](plots/turkey.svg "Turkey temperature prediction")
 
 ---
 
