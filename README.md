@@ -7,9 +7,8 @@ TempFit does extrapolation on time and temperature data to estimate when your me
 * Understand more about the accuracy and reliability of the estimation.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/pork_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/pork_light.svg">
-  <img alt="Graph of temperature data and prediction" src="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/pork_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="plots/pork_light.svg">
+  <img align="center" alt="Graph of temperature data and prediction" src="plots/pork_dark.svg">
 </picture>
 
 *Illustrates the `estimate()` function with measured data in blue and the estimated future data in orange*
@@ -84,19 +83,18 @@ def tx(x, a, b, c, d, e):
 Boneless pork shoulder with probe inserted into the center, estimated almost 2 hours before done time.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/pork_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/pork_light.svg">
-  <img alt="Pork temperature data and prediction" src="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/pork_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="plots/pork_light.svg">
+  <img align="center" alt="Pork temperature data and prediction" src="plots/pork_dark.svg">
 </picture>
+
 
 ### Turkey :chicken:
 
 Spatchcocked turkey with probe inserted into the breast, estimated about 1 hour before done time.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/turkey_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/turkey_light.svg">
-  <img alt="Turkey temperature data and prediction" src="https://raw.githubusercontent.com/DevinBerchtold/TempFit/master/plots/turkey_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="plots/turkey_light.svg">
+  <img align="center" alt="Turkey temperature data and prediction" src="plots/turkey_dark.svg">
 </picture>
 
 > *Note:* The FDA recommends poultry be cooked to at least 165° internal temperature, but it will probably be dry. See [this article](https://www.seriouseats.com/butterflied-roasted-chicken-with-quick-jus-recipe) by J. Kenji López-Alt for more information.

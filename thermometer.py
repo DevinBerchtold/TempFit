@@ -22,29 +22,31 @@ def format_minutes(minutes):
         return f'-{h}:{m:02}'
 
 class Thermometer:
+    # Dark Mode Style
     dark_style = {
         'axes.facecolor': '00000080',
         'axes.prop_cycle': "cycler('color', ['tab:blue', 'tab:orange', 'tab:green', 'tab:red'])",
         'figure.facecolor': '1e1e1e', # vscode gray
         'figure.edgecolor': '1e1e1e', # vscode gray
         # 'savefig.facecolor': '0D1117', # github gray
-        # 'savefig.edgecolor': '0D1117'  # github gray
+        # 'savefig.edgecolor': '0D1117', # github gray
         'savefig.facecolor': '00000000',
         'savefig.edgecolor': '00000000',
-        'lines.color': 'ffffff80',
-        'figure.figsize': '5.4, 3.6',  # figure size in inches
-        'figure.dpi': '100'       # figure dots per inch
+        'lines.color': 'ffffff80',          
+        'figure.figsize': '6, 4',
+        'figure.dpi': '100', # 640x360 (16:9)
     }
-    pyplot.style.use(['dark_background', dark_style])
+    # Light Mode
+    light_style = {
+        'savefig.facecolor': 'ffffff00',    # transparent
+        'savefig.edgecolor': 'ffffff00',    # transparent
+        'lines.color': '00000080',
+        'figure.figsize': '6, 4',       # figure size in inches
+        'figure.dpi': '100',                # figure dots per inch
+    }
 
-    # light_style = {
-    #     'savefig.facecolor': 'ffffff00', # transparent
-    #     'savefig.edgecolor': 'ffffff00', # transparent
-    #     'lines.color': '00000080',
-    #     'figure.figsize': '5.4, 3.6',  # figure size in inches
-    #     'figure.dpi': '100'       # figure dots per inch
-    # }
-    # pyplot.style.use(['default', light_style])
+    # pyplot.style.use(['dark_background', dark_style])
+    pyplot.style.use(['default', light_style])
 
     def __init__(self, filename=None):
         self.filename = filename
