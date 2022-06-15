@@ -45,8 +45,8 @@ class Thermometer:
         'figure.dpi': '100',                # figure dots per inch
     }
 
-    # pyplot.style.use(['dark_background', dark_style])
-    pyplot.style.use(['default', light_style])
+    pyplot.style.use(['dark_background', dark_style])
+    # pyplot.style.use(['default', light_style])
 
     def __init__(self, filename=None):
         self.filename = filename
