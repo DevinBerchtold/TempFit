@@ -1,6 +1,5 @@
 from thermometer import *
 import glob
-import datetime as dt
 
 ## CONSTANTS
 

@@ -34,7 +34,7 @@ TempFit does extrapolation on time and temperature data to estimate when your me
 
 ## Usage
 
-1. Start cooking and save your temperature data (or try an included .csv)
+1. Start cooking and save your temperature data with an electronic thermometer or using [`manual.py`](#manualpy)
 2. Import [`thermometer.py`](#thermometerpy) and create a `Thermometer` object from your .csv
 3. Run `Thermometer.estimate()` to predict future temperatures. (See [`test.ipynb`](#testipynb) for examples)
 
@@ -49,6 +49,10 @@ Defines the `Thermometer` class which contains time and temperature data from an
 ### main.py
 
 Find csv files with today's date and import the most recent one. Do some common estimations quickly. This is the quickest way to import temperatures and estimate quickly white cooking.
+
+### manual.py
+
+Manually enter temperature values for extrapolation. They will be automatically timestamped and saved in a .csv file for quick calculations while cooking.
 
 ### test.ipynb
 

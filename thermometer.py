@@ -3,6 +3,9 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import *
 from matplotlib import pyplot
+import datetime as dt
+import warnings
+warnings.filterwarnings('ignore', 'The iteration is not making good progress')
 
 def p2(x, a, b, c):
     return (a*(x**2))+(b*x)+c
@@ -48,21 +51,39 @@ class Thermometer:
     pyplot.style.use(['dark_background', dark_style])
     # pyplot.style.use(['default', light_style])
 
-    def __init__(self, filename=None):
-        self.filename = filename
+    def __init__(self, filename=None, temp=None):
+        if filename == None:
+            self.filename = f'cooks/manual_{dt.date.today():%Y%m%d}.csv'
+            t = np.datetime64('now')
+            self.start = self.end = t
+            data = {
+                'Temperature': [float(temp)],
+                'Minutes': [0.0]
+            }
+            self.dataframe = pd.DataFrame(data,index=[t])
+            self.dataframe.index.name = 'Time'
+        else:
+            self.filename = filename
+            # Excel Format:
+            # self.dataframe = pd.read_csv(f,parse_dates=True,infer_datetime_format=True,index_col=0,usecols=[0, 1])
+            # Inkbird Format:
+            self.dataframe = pd.read_csv(filename,delimiter='\t',encoding='utf_16',parse_dates=True,infer_datetime_format=True,index_col=0,usecols=[0, 1])
 
-        # Excel Format:
-        # self.dataframe = pd.read_csv(f,parse_dates=True,infer_datetime_format=True,index_col=0,usecols=[0, 1])
-        # Inkbird Format:
-        self.dataframe = pd.read_csv(filename,delimiter='\t',encoding='utf_16',parse_dates=True,infer_datetime_format=True,index_col=0,usecols=[0, 1])
+            self.start = self.dataframe.index[0]
+            self.end = self.dataframe.index[-1]
+            
+            # Number of minutes since beginning of period
+            t0 = self.dataframe.index.values[0]
+            self.dataframe['Minutes'] = [(t-t0)/np.timedelta64(1, 'm') for t in self.dataframe.index.values]
+            self.trim()
 
-        self.start = self.dataframe.index[0]
-        self.end = self.dataframe.index[-1]
-        
-        # Number of minutes since beginning of period
-        t0 = self.dataframe.index.values[0]
-        self.dataframe['Minutes'] = [(t-t0)/np.timedelta64(1, 'm') for t in self.dataframe.index.values]
-        self.trim()
+    def add(self, temp):
+        t = np.datetime64('now')
+        data = [temp, (t-self.start)/np.timedelta64(1, 'm')]
+        self.end = t
+        # print(self.dataframe)
+        self.dataframe.loc[t]=data
+        # print(self.dataframe)
 
     def trim(self):
         imax = self.dataframe.idxmax()['Temperature']
@@ -85,7 +106,7 @@ class Thermometer:
         best = min(roots, key=(lambda i : abs(i - x[-1]) ) ) # Solution that is shortest time in the future
         return best, new_f, popt
 
-    def estimate(self, done_temp, time=180, fit_func='tx', start=None, end=None, display=True, plot=False, debug=False):
+    def estimate(self, done_temp, time=180, fit_func='tx', start=None, end=None, display=True, plot=False, ret='time', debug=False):
         if debug:
             print("== D E B U G   O N ==")
             print(self.dataframe.__repr__())
@@ -130,12 +151,14 @@ class Thermometer:
         eta = start+np.timedelta64(round(time_left),'m')
 
         # Format and print it out
+        eta_string = f"NOW: {now} {last_temp}° --> ETA: {eta} {done_temp}° (in {format_minutes(time_left)})"
         if display:
             if debug:
                 print('== O U T P U T ==')
-            print(f"NOW: {now} {last_temp}° --> ETA: {eta} {done_temp}° (in {format_minutes(time_left)})")
+            print(eta_string)
 
         if plot:
+            pyplot.close('all')
             # Plot actual data
             pyplot.scatter([i/60.0 for i in x], y, marker='.', label='Measured')
             # Plot the fitted function line
@@ -155,6 +178,11 @@ class Thermometer:
             pyplot.axhline(y=done_temp)
             pyplot.legend() # Labels
             # pyplot.savefig('plot.svg')
-            pyplot.show() # Show the chart
+            pyplot.show(block=False) # Show the chart
 
-        return fit_eta
+        if ret == 'time':
+            return fit_eta
+        elif ret == 'string':
+            return eta_string
+        elif ret == 'function':
+            return function
