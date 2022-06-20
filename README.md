@@ -7,11 +7,11 @@ TempFit does extrapolation on time and temperature data to estimate when your me
 * Understand more about the accuracy and reliability of the estimation.
 
 <p align='center'><picture>
-  <source media="(prefers-color-scheme: light)" srcset="plots/pork_light.svg">
-  <img alt="Graph of temperature data and prediction" src="plots/pork_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="plots/animation_light.webp">
+  <img alt="Animation of temperature data and prediction" src="plots/animation_dark.webp">
 </picture></p>
 
-*Illustrates the `estimate()` function with measured data in blue and the estimated future data in orange*
+*Illustrates the `estimate()` function with measured data in blue and the approximation functions in red, orange, and green*
 
 ---
 
