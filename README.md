@@ -69,14 +69,36 @@ Depending on what you're cooking and how fast the temperature changes, you will 
 
 ---
 
-## Curve Fit Performance
+## Estimation Accuracy
 
-`Thermometer` uses `scipy` functions `curve_fit` and `fsolve` to fit an arbitrary function to the measured data and then extrapolate that function and predict future values. A 3rd order polynomial usually fits well, but it's improved by adding a `+cx^-1` term to the objective function:
+### Model Function
+
+`estimate()` works by fitting a model function to measured temperature data and extrapolating to predict future values. A 3rd order polynomial usually fits well, but it's improved by adding an `x⁻¹` term to the objective function:
 
 ```python
 def tx(x, a, b, c, d, e):
-    return (a*(x**3))+(b*(x**2))+(c*x)+(d*((1+x)**-1))+e
+    return a*x**3+b*x**2+c*x+d*(1+x)**-1+e
 ```
+
+The improvements can be easily seen when we plot the ETA at many points throughout the cook. The improved function is closer to correct eta (horizontal line) on average:
+
+<p align='center'><picture>
+  <source media="(prefers-color-scheme: light)" srcset="plots/summary_functions_light.svg">
+  <img alt="Plot of estimations of different functions at different times" src="plots/summary_functions_dark.svg">
+</picture></p>
+
+### Constraints
+
+The result is improved by adding constraints to the fitting function. Some improvement can be obtained by constraining the value and slope of the model function to be what they were at the last measured point (`y[-1]=f(x[-1])` and `y'[-1]=f'(x[-1])`). This is logical because the current temperature and rate of change of temperature will have the biggest effect on future values.
+
+<p align='center'><picture>
+  <source media="(prefers-color-scheme: light)" srcset="plots/summary_constraints_light.svg">
+  <img alt="Plot of estimations of different functions at different times" src="plots/summary_constraints_dark.svg">
+</picture></p>
+
+
+The third constraint is designed specifically for barbecue. It accounts for the '[barbecue stall](https://www.google.com/search?q=barbecue+stall)', a common observation that the temperature increase usually slows around 150-160 °F and speeds up after. This phenomenon represents an inflection point in the temperature vs time graph so it can be modeled by constraining the second derivitive to be zero around 155 (`f"(x)=0 when f(x)=155`). A rough guess of 155 °F shows a big improvement in estimation, but this value can probably be further tuned.
+
 
 ---
 
@@ -109,10 +131,10 @@ Spatchcocked turkey with probe inserted into the breast, estimated about 1 hour 
 
 - [x] Basic estimation
 - [ ] Improve fit function
-    - [ ] Constrain `curve_fit` so `f(x)` and `f'(x)` have correct value at last sample
+    - [x] Constrain `curve_fit` so `f(x)` and `f'(x)` have correct value at last sample
     - [ ] Detect and remove anomolies in input data
     - [ ] Use ambient temperature in calculations
-- [ ] More options for inputing temperature data (realtime mode)
+- [x] More options for inputing temperature data (realtime mode)
 
 ---
 

@@ -1,7 +1,10 @@
 from thermometer import *
 from os.path import exists
 
-done_temp = 200.0
+done_temp = 200
+
+def print_over(string):
+    print('\033[1A'+string+'\033[K')
 
 # Manual mode
 print('== TempFit Manual Mode ==')
@@ -23,9 +26,8 @@ while True:
     t.dataframe.to_csv(filename, sep='\t', encoding='utf_16')
 
     if t.dataframe.shape[0] < 5:
-        # print(t.dataframe)
-        pass
+        print_over(f"NOW: {t.end} {temp}° --> ETA: ???                 {done_temp}° (in ??:??)")
     else:
         # print(t.dataframe.tail(5))
-        str = t.estimate(done_temp, plot=True, ret='string', display=False)
-        print('\033[1A'+str+'\033[K')
+        t.estimate(done_temp, plot=True, display=False)
+        print_over(t.fit_string)
