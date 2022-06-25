@@ -35,35 +35,14 @@ TempFit does extrapolation on time and temperature data to estimate when your me
 ## Usage
 
 1. Start cooking and save your temperature data with an electronic thermometer or using [`manual.py`](#manualpy)
-2. Import [`thermometer.py`](#thermometerpy) and create a `Thermometer` object from your .csv
+2. Import [`thermometer.py`](#thermometerpy) and create a `Thermometer` object from your CSV
 3. Run `Thermometer.estimate()` to predict future temperatures. (See [`test.ipynb`](#testipynb) for examples)
-
----
-
-## Files
-
-### thermometer.py
-
-Defines the `Thermometer` class which contains time and temperature data from an imported .csv file. Has the `estimate()` member function which predicts the time a `Thermometer` will reach a given temperature.
-
-### main.py
-
-Find csv files with today's date and import the most recent one. Do some common estimations quickly. This is the quickest way to import temperatures and estimate quickly white cooking.
-
-### manual.py
-
-Manually enter temperature values for extrapolation. They will be automatically timestamped and saved in a .csv file for quick calculations while cooking.
-
-### test.ipynb
-
-Contains demonstrations and analysis of different uses of the `Thermometer` class and `estimate()` function.
-
 
 ---
 
 ## Temperature Data
 
-`Thermometer` requires a list of temperatures and the times they were recorded. Some thermometers have the ability to export a spreadsheet or .csv file. If that's not avaliable, you can manually measure and enter datapoints into a spreadsheet.
+`Thermometer` requires a list of temperatures and the times they were recorded. Some thermometers have the ability to export a spreadsheet or CSV file. If that's not available, you can manually measure and enter data points into a spreadsheet with the help of [`manual.py`](#manualpy).
 
 Depending on what you're cooking and how fast the temperature changes, you will probably need about an hour of data to get a good estimate.
 
@@ -97,7 +76,27 @@ The result is improved by adding constraints to the fitting function. Some impro
 </picture></p>
 
 
-The third constraint is designed specifically for barbecue. It accounts for the '[barbecue stall](https://www.google.com/search?q=barbecue+stall)', a common observation that the temperature increase usually slows around 150-160 °F and speeds up after. This phenomenon represents an inflection point in the temperature vs time graph so it can be modeled by constraining the second derivitive to be zero around 155 (`f"(x)=0 when f(x)=155`). A rough guess of 155 °F shows a big improvement in estimation, but this value can probably be further tuned.
+The third constraint is designed specifically for barbecue. It accounts for the '[barbecue stall](https://www.google.com/search?q=barbecue+stall)', a common observation that the temperature increase usually slows around 150-160 °F and speeds up after. This phenomenon represents an inflection point in the temperature vs time graph so it can be modeled by constraining the second derivative to be zero around 155 (`f"(x)=0 when f(x)=155`). A rough guess of 155 °F shows a big improvement in estimation, but this value can probably be further tuned.
+
+---
+
+## Files
+
+### thermometer.py
+
+Defines the `Thermometer` class which contains time and temperature data from an imported CSV file. Has the `estimate()` member function which predicts the time a `Thermometer` will reach a given temperature.
+
+### main.py
+
+Find CSV files with today's date and import the most recent one. Do some common estimations quickly. This is the quickest way to import temperatures and estimate quickly white cooking.
+
+### manual.py
+
+Manually enter temperature values for extrapolation. They will be automatically timestamped and saved in a CSV file for quick calculations while cooking.
+
+### test.ipynb
+
+Contains demonstrations and analysis of different uses of the `Thermometer` class and `estimate()` function.
 
 
 ---
@@ -132,9 +131,9 @@ Spatchcocked turkey with probe inserted into the breast, estimated about 1 hour 
 - [x] Basic estimation
 - [ ] Improve fit function
     - [x] Constrain `curve_fit` so `f(x)` and `f'(x)` have correct value at last sample
-    - [ ] Detect and remove anomolies in input data
+    - [ ] Detect and remove anomalies in input data
     - [ ] Use ambient temperature in calculations
-- [x] More options for inputing temperature data (realtime mode)
+- [x] More options for inputting temperature data (realtime mode)
 
 ---
 

@@ -122,7 +122,7 @@ class Function:
         self.p, _ = curve_fit(self.f, xx, yy, self.p)
         return self.p
 
-    def minimize(self, xx, yy, slope, contrain=(True, True, True), bound=None):
+    def minimize(self, xx, yy, slope, constrain=(True, True, True), bound=None):
         # def positive_d(p, x, y, f):
         #     ret = 0.0
         #     r = np.arange(x[0], x[-1] + (x[-1]-x[0]),1.0)
@@ -158,7 +158,7 @@ class Function:
             # },
         ]
         # filter based on input
-        constraints = [c for c, b in zip(constraints, contrain) if b == True]
+        constraints = [c for c, b in zip(constraints, constrain) if b == True]
 
         obj = lambda p,x,y,f: np.sum((f(x, *p) - y) ** 2)
         # options={'maxiter': 100}
@@ -514,8 +514,10 @@ class Thermometer:
         all_x, all_y = self.dataframe["Minutes"].values, self.dataframe["Temperature"].values
         maxx = max(self.fit_x[-1], all_x[-1])
         minx = self.fit_x[0]
-        plt.scatter([i/60.0 for i in all_x], all_y, marker='o', color='#808080')
-        plt.scatter([i/60.0 for i in self.fit_x], self.fit_y, marker='o', label=f'Measured ({format_minutes(minx)}-{format_minutes(self.fit_x[-1])})')
+        # plt.scatter([i/60.0 for i in all_x], all_y, marker='o', color='#808080')
+        # plt.scatter([i/60.0 for i in self.fit_x], self.fit_y, marker='o', label=f'Measured ({format_minutes(minx)}-{format_minutes(self.fit_x[-1])})')
+        plt.plot([i/60.0 for i in all_x], all_y, '-', linewidth=6, solid_capstyle='round', color='#80808080')
+        plt.plot([i/60.0 for i in self.fit_x], self.fit_y, '-', linewidth=6, solid_capstyle='round', color='#20A0FF80', label=f'Measured ({format_minutes(minx)}-{format_minutes(self.fit_x[-1])})')
 
         # Plot the fitted function lines
         lastx = max(maxx, self.fit_eta)+min(maxx-minx,60) # from beginning of prediction data, to end of measured data plus one hour
