@@ -9,6 +9,7 @@ from matplotlib.animation import FuncAnimation
 import datetime as dt
 import re
 import warnings
+import time
 warnings.filterwarnings('ignore', 'The iteration is not making good progress')
 warnings.filterwarnings('ignore', 'Covariance of the parameters could not be estimated')
 
@@ -123,13 +124,9 @@ class Function:
         return self.p
 
     def minimize(self, xx, yy, slope, constrain=(True, True, True), bound=None):
-        # def positive_d(p, x, y, f):
-        #     ret = 0.0
-        #     r = np.arange(x[0], x[-1] + (x[-1]-x[0]),1.0)
-        #     for i in r:
-        #         if f(i,p) < 0.0:
-        #             ret += f(i,p)
-        #     return ret
+        def function_positive(p, f, x1, x2):
+            l = np.linspace(x1, x2 + (x2-x1),100) # 50 samples between x1 and x2, 50 samples in front
+            return np.where(l<0, f(l,*p), 0).sum(0) # sum of all negative values
 
         def stall_inflection(p, f, lx, st): # f''(x) = 0 when f(x) = stall
             ix, _ = f.solve(st, x0=lx, parm=p)
@@ -151,11 +148,11 @@ class Function:
                 'fun': stall_inflection,
                 'args': (self, xx[-1], 155.0)
             },
-            # {
-            #     'type':'ineq', # derivative positive
-            #     'fun': positive_d,
-            #     'args': (self.fit_x, self.fit_y, func['f1p'])
-            # },
+            {
+                'type':'ineq', # derivative positive at all points
+                'fun': function_positive,
+                'args': (self.f1, xx[0], xx[-1])
+            },
         ]
         # filter based on input
         constraints = [c for c, b in zip(constraints, constrain) if b == True]
@@ -168,10 +165,13 @@ class Function:
 
     def solve(self, y, x0=1, parm=None):
         """Return the x value where `self.f` is equal to `y`"""
-        roots, _, ier, _ = fsolve(self.fx(sub=y, parm=parm), x0, full_output=True)
-        # roots, _, ier, _ = fsolve(self.fx(sub=y, parm=parm), x0, fprime=lambda x: [self.f1x(parm=parm)(x)], full_output=True)
-        return roots[0], ier == 1
+        t0 = time.time()
+        roots, _, ier, _ = fsolve(self.fx(sub=y, parm=parm), x0, maxfev=1000, full_output=True)
+        # roots, _, ier, _ = fsolve(self.fx(sub=y, parm=parm), x0, maxfev=1000, fprime=self.f1x(parm=parm), full_output=True)
         # sol = root_scalar(self.fx(sub=y, parm=parm), x0=x0, fprime=self.f1x(parm=parm), fprime2=self.f2x(parm=parm), method='halley')
+        Thermometer.solve_time += time.time()-t0
+        Thermometer.solve_calls += 1
+        return roots[0], ier == 1
         # return sol.root, sol.converged
 
     def string(self):
@@ -227,6 +227,11 @@ class Thermometer:
         'figure.dpi': '100',                # figure dots per inch
     }
     
+    solve_time = 0.0
+    solve_calls = 0
+    estimate_time = 0.0
+    estimate_calls = 0
+    
     def __init__(self, filename=None, temp=None, style='dark'):
         """Create a `Thermometer`, reading data from `filename` or initializing the first row with `temp`."""
         self.style = style
@@ -277,6 +282,12 @@ class Thermometer:
             self.start = self.dataframe.index[0]
             self.end = self.dataframe.index[-1]
 
+    def print_times():
+        if Thermometer.solve_calls > 0:
+            print(f'solves: {Thermometer.solve_time/Thermometer.solve_calls}ms')
+        if Thermometer.estimate_calls > 0:
+            print(f'estimates: {Thermometer.estimate_time/Thermometer.estimate_calls}ms')
+
     def diff_plot(self):
         """Plot all temperature vs time data in the dataframe with differentiation."""
         x = self.dataframe['Minutes'].values
@@ -311,7 +322,7 @@ class Thermometer:
         ax2.plot(x_uniform, y_uniform, color='C1')
         fig.show()
 
-    def estimate(self, done_temp, time=180, fit_func='tx', fit_start=None, fit_end=None, constrain=True, bound=False, print=False, plot=False, filename=None):
+    def estimate(self, done_temp, interval=180, fit_func='tx', fit_start=None, fit_end=None, constrain=True, bound=False, print=False, plot=False, filename=None):
         """Estimate when thermometer will reach desired temperature. 
         
         Args:
@@ -323,6 +334,7 @@ class Thermometer:
             print: Whether ETA string should be printed.
             plot: Whether fit chart should be displayed.
         """
+        t0 = time.time()
         self.fit_done = done_temp
         if fit_end==None:
             self.fit_end = self.end
@@ -330,7 +342,7 @@ class Thermometer:
             self.fit_end = fit_end
 
         if fit_start==None:
-            self.fit_start = self.fit_end - np.timedelta64(time, 'm')
+            self.fit_start = self.fit_end - np.timedelta64(interval, 'm')
         else:
             self.fit_start = fit_start
             
@@ -403,6 +415,9 @@ class Thermometer:
                 plt.savefig(filename)
             else:
                 plt.show()
+
+        Thermometer.estimate_time += time.time()-t0
+        Thermometer.estimate_calls += 1
 
         if self.fit_eta < 0:
             return 0.0

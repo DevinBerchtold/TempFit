@@ -11,7 +11,7 @@ TempFit does extrapolation on time and temperature data to estimate when your me
   <img alt="Animation of temperature data and prediction" src="plots/animation_dark.webp">
 </picture></p>
 
-*Illustrates the `estimate()` function with measured data in blue and the approximation functions in red, orange, and green*
+*Illustrates the `estimate()` function with measured data in blue and the approximation functions in red, orange, and green ([See more](#example-cooks))*
 
 ---
 
